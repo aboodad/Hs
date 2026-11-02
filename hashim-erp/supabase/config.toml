@@ -1,0 +1,23 @@
+# إعدادات Supabase CLI (للربط: supabase link --project-ref <REF>)
+project_id = "hashim-erp"
+
+[api]
+enabled = true
+schemas = ["public", "storage"]
+
+[db]
+major_version = 15
+
+[auth]
+enabled = true
+# غيّر الرابط إلى عنوان موقعك بعد النشر (يُستخدم في رابط استعادة كلمة المرور)
+site_url = "http://localhost:5173"
+additional_redirect_urls = ["http://localhost:5173/login"]
+enable_signup = false           # لا تسجيل ذاتي: الحسابات يُنشئها المدير فقط
+
+[auth.email]
+enable_signup = false
+enable_confirmations = false
+
+[functions.manage-user]
+verify_jwt = true               # الدالة تتحقق بنفسها من صلاحية المستدعي (إلا في الإعداد الأول)
