@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { font-family: 'IBM Plex Sans Arabic', 'Tajawal', 'Segoe UI', Tahoma, system-ui, sans-serif; }
+  body {
+    @apply bg-cream-100 text-brand-900 antialiased;
+    font-size: 15px; line-height: 1.65; letter-spacing: 0; text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    background-image: radial-gradient(1200px 500px at 100% -10%, rgba(201,162,75,.10), transparent 60%);
+    background-attachment: fixed;
+  }
+  /* الأرقام بعرض ثابت لسهولة قراءة الجداول والمبالغ */
+  table, .tabular { font-variant-numeric: tabular-nums; }
+  input, select, textarea, button { font-family: inherit; }
+  ::selection { background: rgba(201,162,75,.35); }
+  ::-webkit-scrollbar { width: 9px; height: 9px; }
+  ::-webkit-scrollbar-thumb { background: #dccaa2; border-radius: 9px; }
+}
+
+@layer components {
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition duration-150 active:scale-[.98] disabled:cursor-not-allowed disabled:opacity-50; }
+  .input { @apply w-full rounded-xl border border-cream-400 bg-cream-50 px-3.5 py-2.5 text-sm text-brand-900 outline-none transition placeholder:text-brand-300 focus:border-gold-500 focus:bg-white focus:ring-4 focus:ring-gold-200/60 disabled:bg-cream-200; }
+  .card { @apply rounded-2xl border border-cream-300/80 bg-white shadow-soft; }
+  .gold-text { @apply bg-gradient-to-l from-gold-600 to-gold-400 bg-clip-text text-transparent; }
+}
+
+/* الطباعة: يُطبع عنصر #print-area فقط (فاتورة حرارية 80mm) */
+@media print {
+  body * { visibility: hidden; }
+  #print-area, #print-area * { visibility: visible; }
+  #print-area { position: absolute; inset-inline-start: 0; top: 0; width: 80mm; }
+  @page { margin: 4mm; }
+}
+
+/* طباعة التقارير والكشوف (A4) */
+@media print {
+  #report-print, #report-print * { visibility: visible; }
+  #report-print { position: absolute; inset-inline-start: 0; top: 0; width: 100%; }
+  .no-print { display: none !important; }
+}
+
+/* ───── تطوير التصميم: حركات وهياكل تحميل وبطاقات ───── */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes shimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+@layer utilities {
+  .fade-up { animation: fadeUp .45s cubic-bezier(.2,.7,.2,1) both; }
+  .skeleton { background: linear-gradient(90deg, #f1e6d6 25%, #f8efe0 50%, #f1e6d6 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite linear; border-radius: .6rem; }
+}
+@layer components {
+  .card-hover { @apply transition duration-200 hover:-translate-y-0.5 hover:border-gold-300 hover:shadow-gold; }
+  .tile-gold  { @apply bg-gradient-to-br from-gold-200 to-gold-400 text-brand-900; }
+  .tile-brown { @apply bg-gradient-to-br from-brand-600 to-brand-800 text-gold-200; }
+  .tile-green { @apply bg-gradient-to-br from-emerald-100 to-emerald-200 text-emerald-800; }
+  .tile-red   { @apply bg-gradient-to-br from-red-100 to-red-200 text-red-800; }
+  .seg { @apply inline-flex rounded-xl border border-cream-300 bg-white p-1 shadow-sm; }
+  .seg > button { @apply rounded-lg px-3.5 py-1.5 text-[13px] font-semibold text-brand-500 transition hover:text-brand-800; }
+  .seg > button[data-on='true'] { @apply bg-gradient-to-b from-brand-600 to-brand-800 text-gold-100 shadow; }
+}
+
+/* ───── مكونات "المطبخ": ضغط مطوّل، طباعة إيصال، منطقة إفلات مغناطيسية ───── */
+@keyframes printOut { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+@keyframes printerShake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-1px); } 75% { transform: translateX(1px); } }
+@keyframes popIn { 0% { transform: scale(.4); opacity: 0; } 70% { transform: scale(1.15); opacity: 1; } 100% { transform: scale(1); } }
+@keyframes dashMove { to { stroke-dashoffset: -24; } }
+@layer utilities {
+  .pop-in { animation: popIn .35s cubic-bezier(.2,.9,.3,1.3) both; }
+  .printer-shake { animation: printerShake .12s linear infinite; }
+  .paper-out { animation: printOut 2.4s steps(36, end) both; }
+}
